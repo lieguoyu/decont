@@ -16,3 +16,9 @@
 #   CCAGGATTTACAGACTTTAAA
 #
 #   If $4 == "another" only the **first two sequence** should be output
+#
+#echo "Downloading RNA.."
+
+ wget -P $2 $1
+
+	if [ "$3"
