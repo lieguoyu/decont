@@ -6,3 +6,12 @@
 
 # STAR --runThreadN 4 --runMode genomeGenerate --genomeDir <outdir> \
 # --genomeFastaFiles <genomefile> --genomeSAindexNbases 9
+
+echo  "Star Index" 
+mkdir -p res/contaminants_idx 
+
+STAR --runThreadN 4 --runMode genomeGenerate \
+--genomeDir $2 \
+--genomeFastaFiles $1 \
+--genomeSAindexNbases 9
+

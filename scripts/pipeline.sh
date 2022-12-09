@@ -6,7 +6,7 @@ done
 
 # Download the contaminants fasta file, uncompress it, and
 # filter to remove all small nuclear RNAs
-bash scripts/download.sh <contaminants_url> res yes #TODO
+bash scripts/download.sh https://bioinformatics.cnio.es/data/courses/decont/contaminants.fasta.gz res yes #TODO
 
 # Index the contaminants file
 bash scripts/index.sh res/contaminants.fasta res/contaminants_idx
@@ -20,6 +20,11 @@ done
 # TODO: run cutadapt for all merged files
 # cutadapt -m 18 -a TGGAATTCTCGGGTGCCAAGG --discard-untrimmed \
 #     -o <trimmed_file> <input_file> > <log_file>
+
+echo "running cutadapt"
+mkdir -p log/cutadapt
+cutadapt -m 18 -a TGGAATTCTCGGGTGCCAAGG --discard-untrimmed \
+	-o log/catadapt/
 
 # TODO: run STAR for all trimmed files
 for fname in out/trimmed/*.fastq.gz

@@ -17,8 +17,16 @@
 #
 #   If $4 == "another" only the **first two sequence** should be output
 #
-#echo "Downloading RNA.."
+echo "Downloading RNA.."
+namefiles = $(basaname $1)
 
  wget -P $2 $1
 
-	if [ "$3"
+if [ "$3" == "yes" ]
+then
+gunzip -k $2/$namefiles 
+fi
+
+if [ "$4" == "small nuclear" ]
+then 
+sed 
