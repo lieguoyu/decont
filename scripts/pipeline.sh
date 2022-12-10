@@ -12,7 +12,7 @@ bash scripts/download.sh https://bioinformatics.cnio.es/data/courses/decont/cont
 bash scripts/index.sh res/contaminants.fasta res/contaminants_idx
 
 # Merge the samples into a single file
-for sid in $(<list_of_sample_ids>) #TODO
+for sid in $(ls data/*.fastq.gz | cut -d "-" -f1 | sed "s:data/::"  | sort | uniq) #TODO
 do
     bash scripts/merge_fastqs.sh data out/merged $sid
 done
@@ -23,18 +23,31 @@ done
 
 echo "running cutadapt"
 mkdir -p log/cutadapt
+mkdir -p out/trimmed
+
+for sampleid in $(ls out/merged/*.fastq.gz | cut -d "." -f1| sed "s:out/merged/::" | sort | uniq)
+do
 cutadapt -m 18 -a TGGAATTCTCGGGTGCCAAGG --discard-untrimmed \
-	-o log/catadapt/
+	-o out/trimmed/${sampleid}.trimmed.fastq.gz \
+	out/merged/${sampleid}.trimmed.fastq.gz > log/cutadapt/${sampleid}.log
+done
+echo "running STAR alignment"
 
 # TODO: run STAR for all trimmed files
+
 for fname in out/trimmed/*.fastq.gz
 do
     # you will need to obtain the sample ID from the filename
-    sid=#TODO
+    sid=$($fname | cut -d "." -f1 | sed "s:out/merged/::") #TODO
     # mkdir -p out/star/$sid
+	mkdir -p out/star/$sid
     # STAR --runThreadN 4 --genomeDir res/contaminants_idx \
     #    --outReadsUnmapped Fastx --readFilesIn <input_file> \
     #    --readFilesCommand gunzip -c --outFileNamePrefix <output_directory>
+	STAR -- runThreadN 4 --genomeDir res/contaminants_idx \
+		--outReadsUnmapped Fastx \ 
+		--readFilesIn out/trimmed/${sid}.trimmed.fastq.gz \
+		--readFilesCommand gunzip -c --outFilesNamePrefix out/star/${sid}
 done 
 
 # TODO: create a log file containing information from cutadapt and star logs

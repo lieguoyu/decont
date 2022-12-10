@@ -18,15 +18,14 @@
 #   If $4 == "another" only the **first two sequence** should be output
 #
 echo "Downloading RNA.."
-namefiles = $(basaname $1)
 
  wget -P $2 $1
 
+file_urls=$(basename $1)
+
 if [ "$3" == "yes" ]
 then
-gunzip -k $2/$namefiles 
+gunzip -k $2/$file_urls 
 fi
 
-if [ "$4" == "small nuclear" ]
-then 
-sed 
+
