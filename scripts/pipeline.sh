@@ -49,7 +49,7 @@ do
 		--outReadsUnmapped Fastx \
 		--readFilesIn out/trimmed/${sid}.trimmed.fastq.gz \
 		--readFilesCommand gunzip -c \
-		--outFilesNamePrefix out/star/${sid}
+		--outFileNamePrefix out/star/${sid}/
 done
 
 
