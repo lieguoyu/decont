@@ -17,7 +17,8 @@
 #
 #   If $4 == "another" only the **first two sequence** should be output
 #
-echo "Downloading RNA.."
+
+echo "Downloading RNA"
 
  wget -P $2 $1
 

@@ -21,10 +21,10 @@ done
 # cutadapt -m 18 -a TGGAATTCTCGGGTGCCAAGG --discard-untrimmed \
 #     -o <trimmed_file> <input_file> > <log_file>
 
-echo "running cutadapt"
+echo "Running cutadapt"
+
 mkdir -p log/cutadapt
 mkdir -p out/trimmed
-
 
 for sampleid in $(ls out/merged/*fastq.gz | cut -d "." -f1| sed 's:out/merged/::' | sort | uniq)
 do
@@ -32,27 +32,28 @@ do
 cutadapt -m 18 -a TGGAATTCTCGGGTGCCAAGG --discard-untrimmed \
 	-o out/trimmed/${sampleid}.trimmed.fastq.gz out/merged/${sampleid}.fastq.gz > log/cutadapt/${sampleid}.log
 done
-echo "running STAR alignment"
+
 
 # TODO: run STAR for all trimmed files
-
-for fname in out/trimmed/*.fastq.gz
-do
     # you will need to obtain the sample ID from the filename
-    sid=$(basename $fname .trimmed.fastq.gz) #TODO
     # mkdir -p out/star/$sid
-	mkdir -p out/star/$sid
     # STAR --runThreadN 4 --genomeDir res/contaminants_idx \
     #    --outReadsUnmapped Fastx --readFilesIn <input_file> \
-    #    --readFilesCommand gunzip -c --outFileNamePrefix <output_directory>
+    #    --readFilesCommand gunzip -c --outFileNamePrefix <output_directory> 
+echo "Running STAR alignment"
+for fname in out/trimmed/*.fastq.gz
+do 
+	sid=$(basename $fname .trimmed.fastq.gz)
+	mkdir -p out/star/${sid}
 	STAR --runThreadN 4 --genomeDir res/contaminants_idx \
-		--outReadsUnmapped Fastx \ 
-		--readFilesIn out/trimmed/ ${sid}.trimmed.fastq.gz \
-		--readFilesCommand gunzip -c \ 
+		--outReadsUnmapped Fastx \
+		--readFilesIn out/trimmed/${sid}.trimmed.fastq.gz \
+		--readFilesCommand gunzip -c \
 		--outFilesNamePrefix out/star/${sid}
-done 
+done
 
-# TODO: create a log file containing information from cutadapt and star logs
+
+#TODO: create a log file containing information from cutadapt and star logs
 # (this should be a single log file, and information should be *appended* to it on each run)
 # - cutadapt: Reads with adapters and total basepairs
 # - star: Percentages of uniquely mapped reads, reads mapped to multiple loci, and to too many loci
