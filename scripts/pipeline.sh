@@ -26,7 +26,7 @@ echo "Running cutadapt"
 mkdir -p log/cutadapt
 mkdir -p out/trimmed
 
-for sampleid in $(ls out/merged/*fastq.gz | cut -d "." -f1| sed 's:out/merged/::' | sort | uniq)
+for sampleid in $(ls out/merged/*fastq.gz | cut -d "." -f1| sed "s:out/merged/::" | sort | uniq)
 do
 
 cutadapt -m 18 -a TGGAATTCTCGGGTGCCAAGG --discard-untrimmed \
@@ -58,3 +58,11 @@ done
 # - cutadapt: Reads with adapters and total basepairs
 # - star: Percentages of uniquely mapped reads, reads mapped to multiple loci, and to too many loci
 # tip: use grep to filter the lines you're interested in
+echo "log file cutadapt"
+for file in log/cutadapt/*.log
+do 
+	cat $file | grep -E "basepairs|adapters" > log/pipeline.log
+done 
+cat log/pipeline.log
+
+echo "log file star"
