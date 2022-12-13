@@ -66,3 +66,9 @@ done
 cat log/pipeline.log
 
 echo "log file star"
+for files in out/star/*
+do
+	ls $files/*.out | cat $files/*out | grep -E "%|multiple|many" > Log.out
+done 
+cat Log.out
+
