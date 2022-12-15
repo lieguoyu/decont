@@ -22,14 +22,13 @@ done
 #     -o <trimmed_file> <input_file> > <log_file>
 
 echo "Running cutadapt"
-
 mkdir -p log/cutadapt
 mkdir -p out/trimmed
 
 for sampleid in $(ls out/merged/*fastq.gz | cut -d "." -f1| sed "s:out/merged/::" | sort | uniq)
 do
 
-cutadapt -m 18 -a TGGAATTCTCGGGTGCCAAGG --discard-untrimmed \
+	cutadapt -m 18 -a TGGAATTCTCGGGTGCCAAGG --discard-untrimmed \
 	-o out/trimmed/${sampleid}.trimmed.fastq.gz out/merged/${sampleid}.fastq.gz > log/cutadapt/${sampleid}.log
 done
 
@@ -40,6 +39,7 @@ done
     # STAR --runThreadN 4 --genomeDir res/contaminants_idx \
     #    --outReadsUnmapped Fastx --readFilesIn <input_file> \
     #    --readFilesCommand gunzip -c --outFileNamePrefix <output_directory> 
+
 echo "Running STAR alignment"
 for fname in out/trimmed/*.fastq.gz
 do 
@@ -58,10 +58,11 @@ done
 # - cutadapt: Reads with adapters and total basepairs
 # - star: Percentages of uniquely mapped reads, reads mapped to multiple loci, and to too many loci
 # tip: use grep to filter the lines you're interested in
+
 echo "log file cutadapt"
 for file in log/cutadapt/*.log
 do 
-	cat $file | grep -E "basepairs|adapters" > log/pipeline.log
+	cat $file | grep -E "%|basepairs|adapters" > log/pipeline.log
 done 
 cat log/pipeline.log
 
