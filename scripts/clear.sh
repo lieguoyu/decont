@@ -1,4 +1,4 @@
-
+ 
 rm Log.out
 
 for i in data/*.gz
@@ -11,17 +11,15 @@ do
 	rm -r $dir
 done
 
-cd log/
-rm -r cutadapt/
-rm pipeline.log
+for file in res/*
+do
+	rm -r $file
+done
 
-cd ..
+for files in log/*
+do
+	rm -r $files
+done
 
-cd res/
-rm -r contaminants_idx
-rm contaminants.fasta
-rm contaminants.fasta.gz
-
-cd ..
 
 tree
