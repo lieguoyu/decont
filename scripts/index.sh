@@ -8,7 +8,14 @@
 # --genomeFastaFiles <genomefile> --genomeSAindexNbases 9
 
 echo  "Star Index" 
-mkdir -p res/contaminants_idx 
+
+if test -d res/contaminants_idx
+then
+	echo "Exist"
+else
+	echo "Creating directory"
+	mkdir -p res/contaminants_idx 
+fi
 
 STAR --runThreadN 4 --runMode genomeGenerate \
 --genomeDir $2 \

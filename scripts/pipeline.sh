@@ -24,8 +24,22 @@ done
 #     -o <trimmed_file> <input_file> > <log_file>
 
 echo "Running cutadapt"
-mkdir -p log/cutadapt
-mkdir -p out/trimmed
+if test -d log/cutadapt
+then
+	echo "Exist"
+else
+	echo "Creating directory"
+	mkdir -p log/cutadapt
+fi
+
+if test -d out/trimmed
+then 
+	echo "Exist"
+else
+	echo "Creating directory"
+	mkdir -p out/trimmed
+fi
+
 
 for sampleid in $(ls out/merged/*fastq.gz | cut -d "." -f1| sed "s:out/merged/::" | sort | uniq)
 do
@@ -46,7 +60,13 @@ echo "Running STAR alignment"
 for fname in out/trimmed/*.fastq.gz
 do 
 	sid=$(basename $fname .trimmed.fastq.gz)
-	mkdir -p out/star/${sid}
+	if test -d out/star/${sid}
+	then
+		echo "Exist"
+	else
+		echo "Creating directory"
+		mkdir -p out/star/${sid}
+	fi
 	STAR --runThreadN 4 --genomeDir res/contaminants_idx \
 		--outReadsUnmapped Fastx \
 		--readFilesIn out/trimmed/${sid}.trimmed.fastq.gz \

@@ -4,6 +4,13 @@
 #
 # The directory containing the samples is indicated by the first argument ($1).
 
-mkdir -p  out/merged
+
+if test -d out/merged
+then
+	echo "Exist"
+else
+	echo "Creating directory"
+	mkdir -p  out/merged
+fi
 
 cat $1/${sampleid}*.fastq.gz > $2/$3.fastq.gz
