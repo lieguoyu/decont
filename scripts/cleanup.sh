@@ -1,24 +1,24 @@
  
 rm Log.out
 
-for i in data/*.gz
+for i in data/*.gz*
 do 
-	rm $i 
+	rm -r -f $i 
 done 
 
 for dir in out/*
 do
-	rm -r $dir
+	rm -r -f  $dir
 done
 
 for file in res/*
 do
-	rm -r $file
+	rm -r -f $file
 done
 
 for files in log/*
 do
-	rm -r $files
+	rm -r -f $files
 done
 
 
