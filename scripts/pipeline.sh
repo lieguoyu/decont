@@ -24,9 +24,10 @@ done
 #     -o <trimmed_file> <input_file> > <log_file>
 
 echo "Running cutadapt"
+
 if test -d log/cutadapt
 then
-	echo "Exist"
+	echo "Directory already created"
 else
 	echo "Creating directory"
 	mkdir -p log/cutadapt
@@ -34,7 +35,7 @@ fi
 
 if test -d out/trimmed
 then 
-	echo "Exist"
+	echo "Directory already created"
 else
 	echo "Creating directory"
 	mkdir -p out/trimmed
@@ -43,6 +44,11 @@ fi
 
 for sampleid in $(ls out/merged/*fastq.gz | cut -d "." -f1| sed "s:out/merged/::" | sort | uniq)
 do
+	if [ -e out/trimmed/${sampleid}.trimmed.fastq.gz ]
+	then
+		echo "Sample $sampleid already completed"
+		continue
+	fi
 
 	cutadapt -m 18 -a TGGAATTCTCGGGTGCCAAGG --discard-untrimmed \
 	-o out/trimmed/${sampleid}.trimmed.fastq.gz out/merged/${sampleid}.fastq.gz > log/cutadapt/${sampleid}.log
@@ -60,9 +66,15 @@ echo "Running STAR alignment"
 for fname in out/trimmed/*.fastq.gz
 do 
 	sid=$(basename $fname .trimmed.fastq.gz)
+	if [ -e out/star/$sid ]
+	then
+		echo "Sample $sid already completed"
+		continue
+	fi
+
 	if test -d out/star/${sid}
 	then
-		echo "Exist"
+		echo "Directory already created"
 	else
 		echo "Creating directory"
 		mkdir -p out/star/${sid}

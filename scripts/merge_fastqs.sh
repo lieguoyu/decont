@@ -5,9 +5,16 @@
 # The directory containing the samples is indicated by the first argument ($1).
 
 
+
+if [ -e $2/$3.fastq.gz ]
+then
+	echo "Merge files already completed"
+	exit 0
+fi
+
 if test -d out/merged
 then
-	echo "Exist"
+	echo "Directory already created"
 else
 	echo "Creating directory"
 	mkdir -p  out/merged

@@ -21,9 +21,16 @@
 
 echo "Downloading RNA"
 
+file_urls=$(basename $1)
+
+if  [ -e $2/$file_urls ]
+then
+	echo "Files $file_urls downloaded"
+	exit 0
+fi
+
 wget -P $2 $1
 
-file_urls=$(basename $1)
 
 if [ "$3" == "yes" ]
 then

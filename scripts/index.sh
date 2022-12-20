@@ -9,9 +9,15 @@
 
 echo  "Star Index" 
 
+if [ -e $2 ]
+then
+	echo "Index files already completed"
+	exit 0
+fi
+
 if test -d res/contaminants_idx
 then
-	echo "Exist"
+	echo "Directory already created"
 else
 	echo "Creating directory"
 	mkdir -p res/contaminants_idx 
