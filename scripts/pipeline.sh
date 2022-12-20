@@ -1,5 +1,5 @@
 
-echo "############ Starting pipeline at $(date + '%H:%M:%S')... ############"
+echo "############ Starting pipeline at $(date +'%H:%M:%S')... ############"
 #Download all the files specified in data/filenames 
 for url in $(cat data/urls) #TODO
 do
@@ -107,4 +107,4 @@ do
 done 
 cat Log.out
 
-echo "############ Pipeline finished at $(date + '%H:%M:%S')############"
+echo "############ Pipeline finished at $(date +'%H:%M:%S')... ############"
