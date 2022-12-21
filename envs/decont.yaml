@@ -1,0 +1,9 @@
+name: entrega_linux
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - star
+  - cutadapt
+prefix: /home/vant/mambaforge/envs/entrega_linux
