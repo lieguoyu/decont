@@ -32,8 +32,3 @@ fi
 wget -P $2 $1
 
 
-if [ "$3" == "yes" ]
-then
-	gunzip -k $2/$file_urls 
-fi
-
